@@ -51,14 +51,22 @@ set wildmode=list:longest
 " ------------------------------------------------
 call plug#begin()
  " Plugin Section
-    Plug 'dense-analysis/ale'
-    Plug 'preservim/nerdtree'
-    Plug 'mhinz/vim-startify'
-    Plug 'rebelot/kanagawa.nvim'
+		Plug 'nvim-lua/plenary.nvim'
+		Plug 'nvim-telescope/telescope.nvim'
+		Plug 'dense-analysis/ale'
+		Plug 'preservim/nerdtree'
+		Plug 'mhinz/vim-startify'
+		Plug 'rebelot/kanagawa.nvim'
 call plug#end()
 " ------------------------------------------------
 
 colorscheme kanagawa-wave
+
+" Optional keybind to open file finder
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " Start NERDTree and leave the cursor in it.
 autocmd VimEnter * NERDTree | wincmd p
