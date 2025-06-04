@@ -55,7 +55,13 @@ call plug#begin()
     Plug 'preservim/nerdtree'
     Plug 'mhinz/vim-startify'
     Plug 'rebelot/kanagawa.nvim'
+	Plug 'lewis6991/gitsigns.nvim'
+	Plug 'windwp/nvim-autopairs'
+	Plug 'folke/which-key.nvim'
+	Plug 'numToStr/Comment.nvim'
+	Plug 'nvim-treesitter/nvim-treesitter'
 call plug#end()
+
 " ------------------------------------------------
 
 colorscheme kanagawa-wave
@@ -67,3 +73,31 @@ autocmd VimEnter * NERDTree | wincmd p
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | call feedkeys(":quit\<CR>:\<BS>") | endif
 
 let NERDTreeShowHidden=1
+
+" KEYBINDINGS
+" ------------------------------------------------
+" move line or visually selected block - alt+j/k
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+" move split panes to left/bottom/top/right
+ nnoremap <A-h> <C-W>H
+ nnoremap <A-j> <C-W>J
+ nnoremap <A-k> <C-W>K
+ nnoremap <A-l> <C-W>L
+" move between panes to left/bottom/top/right
+ nnoremap <C-h> <C-w>h
+ nnoremap <C-j> <C-w>j
+ nnoremap <C-k> <C-w>k
+ nnoremap <C-l> <C-w>l
+
+" Press i to enter insert mode, and ii to exit insert mode.
+:inoremap ii <Esc>
+:inoremap jk <Esc>
+:inoremap kj <Esc>
+:vnoremap jk <Esc>
+:vnoremap kj <Esc>
+
+
+
