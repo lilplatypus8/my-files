@@ -24,23 +24,23 @@ TEXT_DEFAULT='\e[0m' # default
 
 if echo $- | grep i > /dev/null
 then
-  echo -e ${TEXT_WARN}"System: "${TEXT_DEFAULT}${HOSTNAME}
-  echo -e ${TEXT_WARN}"Uptime: "${TEXT_DEFAULT}$(uptime | sed 's/.*up \(.*\),.*user.*/\1/')
-  echo -e ${TEXT_WARN}"   CPU: "${TEXT_DEFAULT}$(lscpu | grep 'CPU(s):' | head -n1 | awk '{print $2 " threads"}')
-  echo -e ${TEXT_WARN}"Memory: "${TEXT_DEFAULT}$(free -h | awk 'NR==2{printf "%s/%s (%.2f%%)\n", $3,$2,$3*100/$2 }')
-  echo -e ${TEXT_WARN}" Users: "${TEXT_DEFAULT}$(who | awk '!seen[$1]++ {printf $1 " "}')
-  echo;
-  #set_autorelabel
-  #set_MOTD
-  #set_WKSTMOTD
+    echo -e ${TEXT_WARN}"System: "${TEXT_DEFAULT}${HOSTNAME}
+    echo -e ${TEXT_WARN}"Uptime: "${TEXT_DEFAULT}$(uptime | sed 's/.*up \(.*\),.*user.*/\1/')
+    echo -e ${TEXT_WARN}"   CPU: "${TEXT_DEFAULT}$(lscpu | grep 'CPU(s):' | head -n1 | awk '{print $2 " threads"}')
+    echo -e ${TEXT_WARN}"Memory: "${TEXT_DEFAULT}$(free -h | awk 'NR==2{printf "%s/%s (%.2f%%)\n", $3,$2,$3*100/$2 }')
+    echo -e ${TEXT_WARN}" Users: "${TEXT_DEFAULT}$(who | awk '!seen[$1]++ {printf $1 " "}')
+    echo;
+    #set_autorelabel
+    #set_MOTD
+    #set_WKSTMOTD
 fi
 
 
 function set_autorelabel () {
-if [ -f "/.autorelabel" ]; then
-    echo -e ${TEXT_ERROR}"System Reboot for ${HOSTNAME} required. Please reboot when convenient"${TEXT_DEFAULT}
-    echo;
-fi
+    if [ -f "/.autorelabel" ]; then
+        echo -e ${TEXT_ERROR}"System Reboot for ${HOSTNAME} required. Please reboot when convenient"${TEXT_DEFAULT}
+        echo;
+    fi
 }
 
 #function set_MOTD () {
@@ -52,23 +52,23 @@ fi
 #}
 
 function set_WKSTMOTD () {
-  if [ -s /opt/motd ]; then
-    echo -e ${TEXT_WARN}'Local messages from /opt/motd:'${TEXT_DEFAULT}
-    cat '/opt/motd'
-    echo;
-  fi
+    if [ -s /opt/motd ]; then
+        echo -e ${TEXT_WARN}'Local messages from /opt/motd:'${TEXT_DEFAULT}
+        cat '/opt/motd'
+        echo;
+    fi
 }
 
 parse_git_branch() {
-     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
 if [[ -f ${HOME}/git-prompt.sh ]]
 then
-  . ${HOME}/git-prompt.sh
+    . ${HOME}/git-prompt.sh
 fi
 
-export PS1='\[\e[92m\]\u@\[\e[93m\]\h \[\e[34m\]\w \[\e[91m\]$(__git_ps1)\[\e[0m\] $ '
+export PS1='\[\e[92m\]\u@\[\e[93m\]\h \[\e[94m\]\w \[\e[91m\]$(__git_ps1)\[\e[0m\] $ '
 
 
 #export PS1='[\u@\h \w]\$ '
@@ -78,13 +78,16 @@ export PS1='\[\e[92m\]\u@\[\e[93m\]\h \[\e[34m\]\w \[\e[91m\]$(__git_ps1)\[\e[0m
 #fi
 
 #java
-#export JAVA_HOME="${HOME}/.local/share/java-22-openjdk"
+export JAVA_HOME="${HOME}/.local/share/jdk-21.0.7"
 #export MAVEN_HOME="${HOME}/.local/share/apache-maven"
-#export PATH="${HOME}/.local/share/java-22-openjdk/bin:${PATH}"
+export PATH="${PATH}:${JAVA_HOME}/bin"
 #export PATH="${HOME}/.local/share/apache-maven/bin:${PATH}"
 
 export TZ=EDT
 export PATH_ORIG=${PATH}
+export PATH="${HOME}/eclipse/java-2025-03/eclipse:${PATH}"
+export PATH="${HOME}/.local/share/nvim/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${PATH}"
 #export PATH="${HOME}/scripts:${PATH}"
 #export PATH="${HOME}/.local/bin:${PATH}"
 #export PATH="${HOME}/scripts:${HOME}/.local/bin:/usr/local/bin:${PATH}:${HOME}/go-1.21.1/bin"
@@ -109,6 +112,7 @@ alias egrep='egrep --color=auto'
 
 alias df="df -h"
 alias vi="vim"
+alias vim="nvim"
 alias dnfvar="/usr/libexec/platform-python -c 'import dnf, json; db = dnf.dnf.Base(); print(json.dumps(db.conf.substitutions, indent=2))'"
 
 # docker
@@ -133,50 +137,50 @@ alias gd="git diff"
 
 if [[ -f ${HOME}/.git-completion.bash ]]
 then
-  . ${HOME}/.git-completion.bash
+    . ${HOME}/.git-completion.bash
 
-  __git_complete gst _git_status
-  __git_complete gco _git_checkout
-  __git_complete gcm _git_commit
-  __git_complete gpl _git_pull
-  __git_complete gps _git_push
-  __git_complete gcl _git_clone
-  __git_complete grh _git_reset
-  __git_complete grs _git_reset
-  __git_complete gf _git_fetch
-  __git_complete gl _git_log
-  __git_complete gd _git_diff
+    __git_complete gst _git_status
+    __git_complete gco _git_checkout
+    __git_complete gcm _git_commit
+    __git_complete gpl _git_pull
+    __git_complete gps _git_push
+    __git_complete gcl _git_clone
+    __git_complete grh _git_reset
+    __git_complete grs _git_reset
+    __git_complete gf _git_fetch
+    __git_complete gl _git_log
+    __git_complete gd _git_diff
 fi
 
 function fdrm {
-  if [[ -n "${1}" ]]
-  then
-    names=${*}
-  else
-    names=$(docker ps --filter "status=exited" --filter "status=created" --format "{{.Names}}")
-  fi
-  if [[ -n "${names}" ]]
-  then
-    docker rm -f ${names}
-  fi
+    if [[ -n "${1}" ]]
+    then
+        names=${*}
+    else
+        names=$(docker ps --filter "status=exited" --filter "status=created" --format "{{.Names}}")
+    fi
+    if [[ -n "${names}" ]]
+    then
+        docker rm -f ${names}
+    fi
 }
 
 function fdrmi {
-  local names=${1:-*}
+    local names=${1:-*}
 
-  matches=$(docker images | tail -n +2 | grep -E -- "${names}" | awk '/<none>/ { print $3; next } { printf("%s:%s\n",$1,$2)}')
-  if [[ -z "${matches}" ]]
-  then
-    echo "No matching images found"
-    return 1
-  fi
+    matches=$(docker images | tail -n +2 | grep -E -- "${names}" | awk '/<none>/ { print $3; next } { printf("%s:%s\n",$1,$2)}')
+    if [[ -z "${matches}" ]]
+    then
+        echo "No matching images found"
+        return 1
+    fi
 
-  docker rmi ${matches}
+    docker rmi ${matches}
 }
 
 
 # Use bash-completion, if available
 #[[ $PS1 && -f ${HOME}/.git-completion.bash ]] && \
-#    . ${HOME}/.git-completion.bash
+    #    . ${HOME}/.git-completion.bash
 
 

@@ -51,18 +51,40 @@ set wildmode=list:longest
 " ------------------------------------------------
 call plug#begin()
  " Plugin Section
-    Plug 'dense-analysis/ale'
-    Plug 'preservim/nerdtree'
-    Plug 'mhinz/vim-startify'
-    Plug 'rebelot/kanagawa.nvim'
-	Plug 'lewis6991/gitsigns.nvim'
-	Plug 'windwp/nvim-autopairs'
-	Plug 'folke/which-key.nvim'
-	Plug 'numToStr/Comment.nvim'
-	Plug 'nvim-treesitter/nvim-treesitter'
+		Plug 'dense-analysis/ale'
+		Plug 'preservim/nerdtree'
+		Plug 'mhinz/vim-startify'
+		Plug 'rebelot/kanagawa.nvim'
+		Plug 'lewis6991/gitsigns.nvim'
+		Plug 'windwp/nvim-autopairs'
+		Plug 'folke/which-key.nvim'
+		Plug 'numToStr/Comment.nvim'
+		Plug 'nvim-treesitter/nvim-treesitter'
+		Plug 'echasnovski/mini.icons'
+		Plug 'nvim-tree/nvim-web-devicons'
+		Plug 'stevearc/conform.nvim'
 call plug#end()
 
 " ------------------------------------------------
+lua << EOF
+require("nvim-autopairs").setup()
+require('mini.icons').setup()
+require("conform").setup({
+  format_on_save = {
+		  lsp_fallback = true,
+		  },
+formatters_by_ft = {
+		sh = {"beautysh"},
+  },
+  formatters = {
+		  beautysh = {
+				  command = "beautysh",
+				  args = {"-"},
+				  stdin = true,
+				  },
+		  },
+})
+EOF
 
 colorscheme kanagawa-wave
 
