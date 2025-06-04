@@ -1,4 +1,5 @@
 " Disable compatibility with vi which can cause unexpected issues.
+
 set nocompatible
 
 " Enable type file detection. Vim will be able to try to detect the type of file in use.
@@ -23,7 +24,10 @@ set number
 set cursorcolumn
 
 " Set tab width to 4 columns.
-set tabstop=4
+set tabstop=2
+
+" Set width for autoindents
+set shiftwidth=4
 
 " While searching though a file incrementally highlight matching characters as you type.
 set incsearch
@@ -51,18 +55,22 @@ set wildmode=list:longest
 " ------------------------------------------------
 call plug#begin()
  " Plugin Section
-		Plug 'dense-analysis/ale'
-		Plug 'preservim/nerdtree'
-		Plug 'mhinz/vim-startify'
-		Plug 'rebelot/kanagawa.nvim'
-		Plug 'lewis6991/gitsigns.nvim'
-		Plug 'windwp/nvim-autopairs'
-		Plug 'folke/which-key.nvim'
-		Plug 'numToStr/Comment.nvim'
-		Plug 'nvim-treesitter/nvim-treesitter'
-		Plug 'echasnovski/mini.icons'
-		Plug 'nvim-tree/nvim-web-devicons'
-		Plug 'stevearc/conform.nvim'
+		Plug 'nvim-lua/plenary.nvim'		"Allows telescope to function (somehow)
+		Plug 'nvim-telescope/telescope.nvim'		"Fuzzy file finder
+		Plug 'dense-analysis/ale'		"Linter
+		Plug 'preservim/nerdtree'		"File explorer
+		Plug 'mhinz/vim-startify'		"Start-up shell
+		Plug 'rebelot/kanagawa.nvim'		"Theme based off of hokusai wave
+		Plug 'lewis6991/gitsigns.nvim'		"Shows git changes in file
+		Plug 'windwp/nvim-autopairs'		"Creates double paranthese/brackets
+		Plug 'folke/which-key.nvim'		"Command finder
+		Plug 'numToStr/Comment.nvim'		"Comment manager
+		Plug 'nvim-treesitter/nvim-treesitter'		"Syntax manager
+		Plug 'echasnovski/mini.icons'		"Mini glyphs
+		Plug 'nvim-tree/nvim-web-devicons'		"Nerd Font icons
+		Plug 'stevearc/conform.nvim'		"File Formatter
+		Plug 'BurntSushi/ripgrep'		"Grep engine
+		Plug 'sharkdp/fd'		" File Finder
 call plug#end()
 
 " ------------------------------------------------
@@ -70,19 +78,19 @@ lua << EOF
 require("nvim-autopairs").setup()
 require('mini.icons').setup()
 require("conform").setup({
-  format_on_save = {
-		  lsp_fallback = true,
-		  },
-formatters_by_ft = {
-		sh = {"beautysh"},
-  },
-  formatters = {
-		  beautysh = {
-				  command = "beautysh",
-				  args = {"-"},
-				  stdin = true,
-				  },
-		  },
+		format_on_save = {
+				lsp_fallback = true,
+		},
+		formatters_by_ft = {
+				sh = {"beautysh"},
+		},
+		formatters = {
+				beautysh = {
+						command = "beautysh",
+						args = {"-"},
+						stdin = true,
+				},
+		},
 })
 EOF
 
@@ -104,22 +112,25 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 " move split panes to left/bottom/top/right
- nnoremap <A-h> <C-W>H
- nnoremap <A-j> <C-W>J
- nnoremap <A-k> <C-W>K
- nnoremap <A-l> <C-W>L
+nnoremap <A-h> <C-W>H
+nnoremap <A-j> <C-W>J
+nnoremap <A-k> <C-W>K
+nnoremap <A-l> <C-W>L
 " move between panes to left/bottom/top/right
- nnoremap <C-h> <C-w>h
- nnoremap <C-j> <C-w>j
- nnoremap <C-k> <C-w>k
- nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
 
 " Press i to enter insert mode, and ii to exit insert mode.
 :inoremap ii <Esc>
-:inoremap jk <Esc>
 :inoremap kj <Esc>
+:inoremap jk <Esc>
 :vnoremap jk <Esc>
 :vnoremap kj <Esc>
 
-
-
+" Optional keybind to open file finder
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
