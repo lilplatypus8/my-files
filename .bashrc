@@ -68,10 +68,14 @@ then
     . ${HOME}/git-prompt.sh
 fi
 
-export PS1='\[\e[92m\]\u@\[\e[93m\]\h \[\e[94m\]\w \[\e[91m\]$(__git_ps1)\[\e[0m\] $ '
+# editted prompt to look similar to kanagawa-wave theme
+export PS1="\[\e[38;5;110m\]\u\[\e[0m\]@\[\e[38;5;179m\]\h \
+\[\e[38;5;107m\]\w \
+\[\e[38;5;141m\]\$(parse_git_branch)\[\e[0m\] ❯ "
+
+#export PS1='\[\e[92m\]\u@\[\e[93m\]\h \[\e[94m\]\w \[\e[91m\]$(__git_ps1)\[\e[0m\] $ '
 
 
-#export PS1='[\u@\h \w]\$ '
 #if [[ -f /.dockerenv ]]
 #the
 #  PS1="[\u@${TEXT_WARN}\h${TEXT_DEFAULT} \w]\$ "
@@ -80,14 +84,11 @@ export PS1='\[\e[92m\]\u@\[\e[93m\]\h \[\e[94m\]\w \[\e[91m\]$(__git_ps1)\[\e[0m
 #java
 export JAVA_HOME="${HOME}/.local/share/jdk-21.0.7"
 #export MAVEN_HOME="${HOME}/.local/share/apache-maven"
-export PATH="${PATH}:${JAVA_HOME}/bin"
 #export PATH="${HOME}/.local/share/apache-maven/bin:${PATH}"
 
 export TZ=EDT
-export PATH_ORIG=${PATH}
-export PATH="${HOME}/eclipse/java-2025-03/eclipse:${PATH}"
-export PATH="${HOME}/.local/share/nvim/bin:${PATH}"
-export PATH="${HOME}/.local/bin:${PATH}"
+#export PATH_ORIG=${PATH}
+export PATH="${JAVA_HOME}/bin:${HOME}/eclipse/java-2025-03/eclipse:${HOME}/.local/share/nvim/bin:${HOME}/.local/bin:${PATH}"
 #export PATH="${HOME}/scripts:${PATH}"
 #export PATH="${HOME}/.local/bin:${PATH}"
 #export PATH="${HOME}/scripts:${HOME}/.local/bin:/usr/local/bin:${PATH}:${HOME}/go-1.21.1/bin"
@@ -111,8 +112,8 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 alias df="df -h"
-alias vi="vim"
-alias vim="nvim"
+alias vim="vim"
+#alias vim="nvim"
 alias dnfvar="/usr/libexec/platform-python -c 'import dnf, json; db = dnf.dnf.Base(); print(json.dumps(db.conf.substitutions, indent=2))'"
 
 # docker
@@ -182,5 +183,3 @@ function fdrmi {
 # Use bash-completion, if available
 #[[ $PS1 && -f ${HOME}/.git-completion.bash ]] && \
     #    . ${HOME}/.git-completion.bash
-
-
